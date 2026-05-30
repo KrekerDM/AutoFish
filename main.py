@@ -3,6 +3,7 @@ import threading
 import time
 import json
 import os
+import sys
 import cv2
 import numpy as np
 import mss
@@ -12,6 +13,13 @@ import subprocess
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 try:
     ctypes.windll.shcore.SetProcessDpiAwareness(2)
@@ -486,8 +494,9 @@ class BrandWidget(QWidget):
         layout.addWidget(self.lbl)
         
         import os
-        if os.path.exists("effect.gif"):
-            self.movie = QMovie("effect.gif")
+        gif_path = resource_path("effect.gif")
+        if os.path.exists(gif_path):
+            self.movie = QMovie(gif_path)
             self.lbl.setScaledContents(True)
             self.lbl.setMovie(self.movie)
             self.movie.start()
